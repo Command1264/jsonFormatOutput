@@ -3,8 +3,9 @@ class jsonFormat():
     def __init__(self, j: dict or list = dict(), showComment: bool = True) -> None:
         self.change(j, showComment)
 
-    def getVersion(self) -> str:
-        return "1.0.0"
+    @classmethod
+    def getVersion(cls) -> str:
+        return "1.0.1"
 
     def change(self, j: dict or list = dict(), showComment: bool = True) -> None:
         self.__jsonStr = j
@@ -128,9 +129,12 @@ class jsonFormat():
         for index, value in enumerate(jsonArray):
             jsonType = type(value)
 
-            if (jsonType is int or jsonType is float or jsonType is bool or jsonType is None):
+            if (jsonType is int or jsonType is float or jsonType is None):
                 # print("\t" * tabFormat + f"{value}" + "," if (count - 1 != index) else "")
                 yield "\t" * tabFormat + f"{value}" + ",\n" if (count - 1 != index) else "\n"
+
+            elif (jsonType is bool):
+                yield "\t" * tabFormat + f"{str(value).lower()}" + ",\n" if (count - 1 != index) else "\n"
 
             elif (jsonType is str):
                 if ( (value[0:2] == "//" or value[0:3] == "//_") and 
